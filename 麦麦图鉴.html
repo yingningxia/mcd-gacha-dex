@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>麦麦图鉴 · 麦门开卡 + 麦门最爱</title>
+<style>
+
+:root{--red:#DA291C;--yellow:#FFC72C;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#fff8ec;color:#2b2b2b}
+.wrap{max-width:880px;margin:0 auto;padding:20px}
+header{background:linear-gradient(135deg,var(--red),#b71c1c);color:#fff;border-radius:16px;padding:22px 24px;display:flex;align-items:center;gap:14px;box-shadow:0 6px 18px rgba(218,41,28,.25)}
+header .logo{width:64px;height:42px;display:flex;align-items:center;justify-content:center}
+header h1{margin:0;font-size:22px}
+header p{margin:4px 0 0;opacity:.9;font-size:13px}
+.mode{margin-left:auto;font-size:12px;background:rgba(255,255,255,.2);padding:4px 10px;border-radius:20px}
+.block{background:#fff;border-radius:16px;padding:18px 20px;margin-top:18px;box-shadow:0 3px 10px rgba(0,0,0,.06)}
+h2{font-size:18px;margin:0 0 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.h-arch{width:26px;height:17px;vertical-align:middle}
+h3{font-size:15px;margin:14px 0 8px}
+.cat-prog{font-size:13px;color:#DA291C;font-weight:600;margin-left:auto}
+.hint{color:#888;font-size:13px;margin:10px 0 0}
+.gacha-row{display:flex;flex-wrap:wrap;gap:12px}
+.gacha-card{width:150px;border:2px solid #ccc;border-radius:12px;padding:12px;background:#fff;position:relative}
+.rar{position:absolute;top:-10px;left:10px;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px}
+.imgwrap{display:block;width:100%;height:96px;position:relative;text-align:center}
+.badge{position:relative;display:inline-block;width:96px;height:96px;border-radius:50%;border:3px solid var(--yellow);box-shadow:0 2px 8px rgba(0,0,0,.15),inset 0 0 0 2px rgba(255,255,255,.4);overflow:hidden;vertical-align:middle}
+.badge .cimg,.badge img{width:100%;height:100%;object-fit:cover;display:block}
+.badge .sheen{position:absolute;top:0;left:-60%;width:50%;height:100%;background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.55) 50%,rgba(255,255,255,0) 100%);transform:skewX(-20deg);animation:sheenMove 3.5s ease-in-out infinite}
+@keyframes sheenMove{0%{left:-60%}55%{left:120%}100%{left:120%}}
+.ph{position:absolute;left:0;right:0;top:36px;font-size:20px;font-weight:800;color:#DA291C}
+.cimg{width:96px;height:96px;object-fit:cover;position:relative;z-index:2}
+.dximg{width:64px;height:64px;object-fit:cover}
+.cname{font-weight:700;font-size:15px;margin-top:6px}
+.cmeta{font-size:12px;color:#666;margin-top:4px}
+.ctags{font-size:11px;color:#DA291C;margin-top:4px}
+.cown{font-size:12px;color:#999;margin-top:6px}
+.cpref{font-size:11px;color:#0a7d2c;margin-top:4px;background:#eafaf0;border-radius:8px;padding:2px 6px;line-height:1.4}
+.mini-order{margin-top:8px;background:var(--red);color:#fff;border:none;border-radius:18px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer}
+.mini-order.sm{padding:3px 9px;font-size:11px}
+.mini-order:hover{background:#b71c1c}
+.cat-block{margin-top:6px}
+.dex-row{display:flex;flex-wrap:wrap;gap:10px}
+.dex-cell{width:104px;border:2px solid #ccc;border-radius:10px;padding:8px;text-align:center;background:#fff;position:relative}
+.dx-rar{font-size:11px;font-weight:700}
+.dx-name{font-size:13px;font-weight:600;margin:4px 0}
+.dx-own{font-size:11px;color:#999}
+.dx-pref{font-size:10px;color:#0a7d2c;margin-top:3px;line-height:1.3}
+.lit{position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);font-size:10px;background:var(--yellow);color:#5a3d00;padding:1px 6px;border-radius:8px;white-space:nowrap}
+.sum-grid{display:flex;gap:14px;flex-wrap:wrap}
+.sum-num{flex:1;min-width:180px;background:linear-gradient(135deg,#fff3d6,#ffe7a8);border:2px solid var(--yellow);border-radius:14px;padding:14px;text-align:center}
+.sum-num .big{display:block;font-size:34px;font-weight:800;color:var(--red)}
+.sum-num .lab{font-size:13px;color:#666}
+.sum-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.sum-chip{font-size:13px;border:2px solid #ccc;border-radius:20px;padding:5px 12px}
+.ach-row{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+.ach{font-size:13px;padding:5px 12px;border-radius:20px}
+.ach.on{background:var(--yellow);color:#5a3d00;font-weight:600}
+.ach.off{background:#f0f0f0;color:#999}
+.hero{background:linear-gradient(135deg,#fff3d6,#ffe7a8);border:2px solid var(--yellow);border-radius:14px;padding:16px;text-align:center;margin-bottom:12px}
+.hero-top{font-size:13px;color:#DA291C;font-weight:700}
+.hero-img{width:84px;height:84px;object-fit:cover}
+.hero-name{font-size:24px;font-weight:800;margin:4px 0}
+.hero-meta{font-size:13px;color:#666}
+.hero-pref{font-size:12px;color:#0a7d2c;margin-top:4px}
+.order-btn{margin-top:12px;background:var(--red);color:#fff;border:none;border-radius:24px;padding:11px 22px;font-size:15px;font-weight:700;cursor:pointer}
+.order-btn.small{padding:7px 14px;font-size:13px}
+.order-btn:hover{background:#b71c1c}
+.save-btn{margin-top:14px;background:#2b2b2b;color:#fff;border:none;border-radius:24px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer}
+.ghost-btn{margin-top:10px;background:#fff;color:var(--red);border:2px dashed var(--red);border-radius:24px;padding:9px 18px;font-size:14px;font-weight:700;cursor:pointer}
+.toast{font-size:12px;color:#2e7d32;margin-top:8px;height:14px}
+.summary{font-size:14px;margin:0 0 8px}
+.meme{font-size:14px;color:#DA291C;background:#fff3f2;border-left:4px solid var(--red);padding:8px 12px;border-radius:8px;margin:10px 0;line-height:1.6}
+table.lb{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+table.lb th,table.lb td{padding:7px 6px;border-bottom:1px solid #eee;text-align:left}
+table.lb th{color:#999;font-weight:600}
+table.lb .num{text-align:right}
+table.lb tr.hot td{background:#fff7e6;font-weight:600}
+.dist{margin-top:12px;font-size:12px}
+.dist-t{color:#999;margin-bottom:6px}
+.pill{display:inline-block;background:#f5f5f5;border-radius:14px;padding:3px 10px;margin:0 6px 6px 0}
+.note{font-size:12px;color:#999;margin-top:10px}
+.build-combo-btn{display:block;margin:14px auto 0;background:linear-gradient(135deg,#FFC72C,#e0a011);color:#5a3d00;border:none;border-radius:24px;padding:10px 22px;font-size:14px;font-weight:700;cursor:pointer}
+.build-combo-btn:hover{filter:brightness(1.05)}
+.combo-builder{margin-top:14px;background:#fffaf0;border:2px dashed var(--yellow);border-radius:14px;padding:14px}
+.cb-list{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.cb-item{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid #eee;border-radius:10px;padding:6px 8px;font-size:12px;width:150px}
+.cb-head{font-weight:600;display:flex;align-items:center;gap:4px}
+.cb-item input[type=text]{border:1px solid #ddd;border-radius:6px;padding:3px 6px;font-size:11px;width:100%}
+.cb-name{width:100%;border:1px solid #ddd;border-radius:8px;padding:7px 10px;font-size:13px;margin-top:6px}
+.cb-actions{margin-top:8px}
+.combo-row{display:flex;flex-wrap:wrap;gap:12px}
+.combo-card{width:240px;border:2px solid var(--yellow);border-radius:12px;padding:12px;background:#fffaf0}
+.combo-name{font-weight:700;font-size:15px;display:flex;align-items:center;gap:4px}
+.combo-items{margin:8px 0;font-size:13px;color:#555}
+.ci{display:inline-block;background:#fff;border:1px solid #eee;border-radius:10px;padding:2px 8px;margin:0 4px 4px 0}
+footer{text-align:center;color:#bbb;font-size:12px;margin:20px 0}
+
+
+.open-stage{position:relative;height:340px;max-width:420px;margin:0 auto;perspective:1000px}
+.arch-top{position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:3;height:140px;display:flex;align-items:flex-end;justify-content:center}
+.arch-top svg{filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.doorway{position:absolute;top:120px;left:50%;transform:translateX(-50%);width:76%;height:200px;border-radius:14px;overflow:hidden;background:#8a1212;box-shadow:inset 0 0 30px rgba(0,0,0,.45),0 6px 14px rgba(0,0,0,.2)}
+.reveal{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:10px;opacity:0;transition:opacity .6s .3s}
+.open-stage.open .reveal{opacity:1}
+.reveal .gacha-card{width:118px;padding:8px}
+.reveal .imgwrap{height:70px}
+.reveal .badge{width:64px;height:64px}
+.reveal .cname{font-size:13px}
+.reveal .mini-order{margin-top:4px}
+.flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,#fff7c0,#ffd34d 40%,transparent 72%);opacity:0}
+.open-stage.open .flash{animation:flashGlow 1.1s ease-out .1s}
+@keyframes flashGlow{0%{opacity:0;transform:scale(.4)}30%{opacity:.95}100%{opacity:0;transform:scale(1.3)}}
+.door{position:absolute;top:0;height:100%;width:50%;background:linear-gradient(180deg,#ffd34d,#e0a011);border:2px solid #b8830c;backface-visibility:hidden;transition:transform .9s cubic-bezier(.6,.05,.3,1)}
+.door-l{left:0;transform-origin:left center;border-right:1px solid #8a6508}
+.door-r{right:0;transform-origin:right center;border-left:1px solid #8a6508}
+.open-stage.open .door-l{transform:translateX(-100%) rotateY(-62deg)}
+.open-stage.open .door-r{transform:translateX(100%) rotateY(62deg)}
+.zipper{position:absolute;top:118px;left:50%;transform:translateX(-50%);width:12px;height:204px;z-index:4}
+.zip-track{position:absolute;left:50%;top:0;transform:translateX(-50%);width:3px;height:100%;background:#5a3a00;border-radius:2px}
+.zip-seam{position:absolute;left:50%;top:0;transform:translateX(-50%);width:6px;height:0;background:linear-gradient(180deg,#fff7d6,#ffd34d);box-shadow:0 0 8px #ffd34d;border-radius:3px}
+.zip-tab{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);width:34px;height:22px;border-radius:5px;background:linear-gradient(180deg,#fff,#cfcfcf);border:1px solid #888;cursor:grab;box-shadow:0 2px 5px rgba(0,0,0,.3);z-index:5}
+.zip-tab:active{cursor:grabbing}
+.open-stage.open .zipper{opacity:0;transition:opacity .4s;pointer-events:none}
+.open-now{display:block;margin:14px auto 0;background:var(--red);color:#fff;border:none;border-radius:24px;padding:11px 26px;font-size:15px;font-weight:700;cursor:pointer}
+.open-now:hover{background:#b71c1c}
+.open-now:disabled{background:#bbb;cursor:default}
+.stage-tip{text-align:center;font-size:13px;color:#DA291C;margin-top:10px}
+
+</style></head>
+<body><div class="wrap">
+<header>
+  <div class="logo"><svg class="logo" width="44" height="29" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-label="金拱门"><defs><linearGradient id="ag1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE89A"/><stop offset="45%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#E0A011"/></linearGradient></defs><path d="M12 78 L12 38 Q12 14 36 14 Q60 14 60 38 L60 78 M60 78 L60 38 Q60 14 84 14 Q108 14 108 38 L108 78" fill="none" stroke="url(#ag1)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div><h1>麦麦图鉴</h1><p>麦门开卡 · 图鉴汇总 · 麦门最爱 —— 用麦当劳 MCP 真实菜单养成的你的专属图鉴</p></div>
+  <div class="mode">DEMO</div>
+</header>
+
+    <section class="block">
+      <h2><svg class="h-arch" width="26" height="17" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-label="金拱门"><defs><linearGradient id="ag2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE89A"/><stop offset="45%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#E0A011"/></linearGradient></defs><path d="M12 78 L12 38 Q12 14 36 14 Q60 14 60 38 L60 78 M60 78 L60 38 Q60 14 84 14 Q108 14 108 38 L108 78" fill="none" stroke="url(#ag2)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg> 麦门开卡 <span class="cat-prog">本次抽中 1 张</span></h2>
+      <div class="open-stage" id="openStage">
+        <div class="arch-top"><svg class="arch-big" width="150" height="99" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-label="金拱门"><defs><linearGradient id="ag3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE89A"/><stop offset="45%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#E0A011"/></linearGradient></defs><path d="M12 78 L12 38 Q12 14 36 14 Q60 14 60 38 L60 78 M60 78 L60 38 Q60 14 84 14 Q108 14 108 38 L108 78" fill="none" stroke="url(#ag3)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="doorway">
+          <div class="reveal">
+    <div class="gacha-card" data-code="S004" style="border-color:#2196f3">
+      <div class="rar" style="background:#2196f3">稀有</div>
+      <span class="badge cimg-wrap"><img class="cimg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNDIgNDYgcTI0IC0xMiAzOCA4IHExMSAxNiAtMiAzMCBxLTE0IDEzIC0zMiAyIHEtMTUgLTEzIC00IC00MCBaIiBmaWxsPSIjYzg4OTNhIi8+PHBhdGggZD0iTTQyIDQ2IHEtOCAtMiAtMTAgNiBxLTIgOCA2IDkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M4ODkzYSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIyOCIgeT0iNDQiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxMyIgcng9IjUiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+      <div class="cname">麦辣鸡翅(2块)</div>
+      <div class="cmeta">小食 · ¥13.5 · 辣</div>
+      <div class="ctags">#辣</div>
+      
+      <button class="mini-order" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u9ea6\u8fa3\u9e21\u7fc5(2\u5757) \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+      <div class="cown">已拥有 ×2</div>
+    </div></div>
+          <div class="flash"></div>
+          <div class="door door-l"></div>
+          <div class="door door-r"></div>
+        </div>
+        <div class="zipper" id="zipper">
+          <div class="zip-track"></div>
+          <div class="zip-seam"></div>
+          <div class="zip-tab" id="zipTab"></div>
+        </div>
+      </div>
+      <button class="open-now" id="openNow" type="button">拉开金拱门</button>
+      <p class="stage-tip" id="stageTip">按住拉链，从上往下滑到底，推开金拱门，金光后现身你的产品</p>
+      <p class="hint">剩余抽卡券：每日免费 <b>0</b> · 额外券 <b>0</b> 抽卡券用完了～ 今天来店里点一单（任意价格 +1 券）或转发给麦门好友（+1 券）就能再抽！</p>
+      <button class="build-combo-btn" type="button" onclick="toggleComboBuilder()">用抽中的卡定制专属套餐</button><div class="combo-builder" id="comboBuilder" hidden><p class="hint">勾选想组进套餐的卡，可给每张加定制需求（默认带上次的选择）。至少 2 张即可组成专属套餐。</p><div class="cb-list"><label class="cb-item"><span class="cb-head"><input type="checkbox" class="cb-pick" data-code="S004" data-name="麦辣鸡翅(2块)" checked> 麦辣鸡翅(2块)</span><input type="text" class="cb-pref" data-code="S004" value="" placeholder="定制，如 不要酸黄瓜"></label></div><input type="text" id="comboName" class="cb-name" placeholder="给你的套餐起个名，如「我的欧气套餐」"><div class="cb-actions"><button class="order-btn small" type="button" onclick="copyComboPlan()">生成套餐指令（下单 / 收藏）</button></div><div class="toast" id="comboToast"></div></div>
+    </section>
+    <section class="block">
+      <h2><svg class="h-arch" width="26" height="17" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-label="金拱门"><defs><linearGradient id="ag4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE89A"/><stop offset="45%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#E0A011"/></linearGradient></defs><path d="M12 78 L12 38 Q12 14 36 14 Q60 14 60 38 L60 78 M60 78 L60 38 Q60 14 84 14 Q108 14 108 38 L108 78" fill="none" stroke="url(#ag4)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg> 图鉴汇总</h2>
+      <div class="sum-grid">
+        <div class="sum-num"><span class="big">11</span><span class="lab">已收集 / 共 18（61.1%）</span></div>
+        <div class="sum-num"><span class="big" style="color:#FFC72C">2</span><span class="lab">已点亮 / 共 18（11.1%）</span></div>
+      </div>
+      <div class="sum-chips"><span class="sum-chip" style="border-color:#9e9e9e"><b style="color:#9e9e9e">普通</b> 拥有 4/5 · 点亮 2</span><span class="sum-chip" style="border-color:#2196f3"><b style="color:#2196f3">稀有</b> 拥有 5/7 · 点亮 0</span><span class="sum-chip" style="border-color:#9c27b0"><b style="color:#9c27b0">史诗</b> 拥有 2/4 · 点亮 0</span><span class="sum-chip" style="border-color:#ff9800"><b style="color:#ff9800">传说</b> 拥有 0/2 · 点亮 0</span></div>
+      <p class="hint">点亮规则：普通卡下单 3 次 / 稀有 5 次 / 史诗 7 次 / 传说 10 次自动点亮；点亮的卡可自由组合成专属套餐。</p>
+    </section>
+    <section class="block">
+      <h2><svg class="h-arch" width="26" height="17" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-label="金拱门"><defs><linearGradient id="ag5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE89A"/><stop offset="45%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#E0A011"/></linearGradient></defs><path d="M12 78 L12 38 Q12 14 36 14 Q60 14 60 38 L60 78 M60 78 L60 38 Q60 14 84 14 Q108 14 108 38 L108 78" fill="none" stroke="url(#ag5)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg> 麦麦图鉴 <span class="cat-prog">已收集 11/18（61.1%）· 点亮 2/18</span></h2>
+      
+        <div class="cat-block">
+          <h3>汉堡 <span class="cat-prog">3/6 · 点亮 0</span></h3>
+          <div class="dex-row">
+            <div class="dex-cell" style="border-color:#9c27b0;filter:grayscale(1);opacity:.45">
+              <div class="dx-rar" style="color:#9c27b0">史诗</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNMjggNTQgUTYwIDM0IDkyIDU0IFE2MCA0OCAyOCA1NCBaIiBmaWxsPSIjZThhOTNiIi8+PGNpcmNsZSBjeD0iNDQiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNTgiIGN5PSI0NSIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNzIiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PHJlY3QgeD0iMzAiIHk9IjU0IiB3aWR0aD0iNjAiIGhlaWdodD0iMTEiIHJ4PSI1IiBmaWxsPSIjN2M0YTFkIi8+PHBhdGggZD0iTTI4IDY1IHE3IC02IDE0IDAgdDE0IDAgdDE0IDAgdDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNmYWU1YSIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzAgNjggaDYwIHE1IDE2IC00IDIwIHEtMjYgOCAtNTIgMCBxLTkgLTQgLTQgLTIwIFoiIGZpbGw9IiNlOGE5M2IiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">？？？</div>
+              <div class="dx-own">未解锁</div>
+              
+              <div class="dx-pref">定制：不要酸黄瓜</div>
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u5de8\u65e0\u9738 \u00d71\uff0c\u95e8\u5e97 SZ001\uff1b\u5b9a\u5236\uff1a\u4e0d\u8981\u9178\u9ec4\u74dc\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#ff9800;filter:grayscale(1);opacity:.45">
+              <div class="dx-rar" style="color:#ff9800">传说</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNMjggNTQgUTYwIDM0IDkyIDU0IFE2MCA0OCAyOCA1NCBaIiBmaWxsPSIjZThhOTNiIi8+PGNpcmNsZSBjeD0iNDQiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNTgiIGN5PSI0NSIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNzIiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PHJlY3QgeD0iMzAiIHk9IjU0IiB3aWR0aD0iNjAiIGhlaWdodD0iMTEiIHJ4PSI1IiBmaWxsPSIjN2M0YTFkIi8+PHBhdGggZD0iTTI4IDY1IHE3IC02IDE0IDAgdDE0IDAgdDE0IDAgdDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNmYWU1YSIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzAgNjggaDYwIHE1IDE2IC00IDIwIHEtMjYgOCAtNTIgMCBxLTkgLTQgLTQgLTIwIFoiIGZpbGw9IiNlOGE5M2IiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">？？？</div>
+              <div class="dx-own">未解锁</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u53cc\u5c42\u5b89\u683c\u65af\u539a\u725b\u5821 \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#9c27b0;filter:grayscale(1);opacity:.45">
+              <div class="dx-rar" style="color:#9c27b0">史诗</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNMjggNTQgUTYwIDM0IDkyIDU0IFE2MCA0OCAyOCA1NCBaIiBmaWxsPSIjZThhOTNiIi8+PGNpcmNsZSBjeD0iNDQiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNTgiIGN5PSI0NSIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNzIiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PHJlY3QgeD0iMzAiIHk9IjU0IiB3aWR0aD0iNjAiIGhlaWdodD0iMTEiIHJ4PSI1IiBmaWxsPSIjN2M0YTFkIi8+PHBhdGggZD0iTTI4IDY1IHE3IC02IDE0IDAgdDE0IDAgdDE0IDAgdDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNmYWU1YSIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzAgNjggaDYwIHE1IDE2IC00IDIwIHEtMjYgOCAtNTIgMCBxLTkgLTQgLTQgLTIwIFoiIGZpbGw9IiNlOGE5M2IiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">？？？</div>
+              <div class="dx-own">未解锁</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u9ea6\u8fa3\u9e21\u817f\u5821 \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#9c27b0;">
+              <div class="dx-rar" style="color:#9c27b0">史诗</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNMjggNTQgUTYwIDM0IDkyIDU0IFE2MCA0OCAyOCA1NCBaIiBmaWxsPSIjZThhOTNiIi8+PGNpcmNsZSBjeD0iNDQiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNTgiIGN5PSI0NSIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNzIiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PHJlY3QgeD0iMzAiIHk9IjU0IiB3aWR0aD0iNjAiIGhlaWdodD0iMTEiIHJ4PSI1IiBmaWxsPSIjN2M0YTFkIi8+PHBhdGggZD0iTTI4IDY1IHE3IC02IDE0IDAgdDE0IDAgdDE0IDAgdDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNmYWU1YSIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzAgNjggaDYwIHE1IDE2IC00IDIwIHEtMjYgOCAtNTIgMCBxLTkgLTQgLTQgLTIwIFoiIGZpbGw9IiNlOGE5M2IiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">板烧鸡腿堡</div>
+              <div class="dx-own">×True</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u677f\u70e7\u9e21\u817f\u5821 \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#2196f3;">
+              <div class="dx-rar" style="color:#2196f3">稀有</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNMjggNTQgUTYwIDM0IDkyIDU0IFE2MCA0OCAyOCA1NCBaIiBmaWxsPSIjZThhOTNiIi8+PGNpcmNsZSBjeD0iNDQiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNTgiIGN5PSI0NSIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNzIiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PHJlY3QgeD0iMzAiIHk9IjU0IiB3aWR0aD0iNjAiIGhlaWdodD0iMTEiIHJ4PSI1IiBmaWxsPSIjN2M0YTFkIi8+PHBhdGggZD0iTTI4IDY1IHE3IC02IDE0IDAgdDE0IDAgdDE0IDAgdDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNmYWU1YSIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzAgNjggaDYwIHE1IDE2IC00IDIwIHEtMjYgOCAtNTIgMCBxLTkgLTQgLTQgLTIwIFoiIGZpbGw9IiNlOGE5M2IiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">麦香鱼</div>
+              <div class="dx-own">×True</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u9ea6\u9999\u9c7c \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#2196f3;">
+              <div class="dx-rar" style="color:#2196f3">稀有</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNMjggNTQgUTYwIDM0IDkyIDU0IFE2MCA0OCAyOCA1NCBaIiBmaWxsPSIjZThhOTNiIi8+PGNpcmNsZSBjeD0iNDQiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNTgiIGN5PSI0NSIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNzIiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PHJlY3QgeD0iMzAiIHk9IjU0IiB3aWR0aD0iNjAiIGhlaWdodD0iMTEiIHJ4PSI1IiBmaWxsPSIjN2M0YTFkIi8+PHBhdGggZD0iTTI4IDY1IHE3IC02IDE0IDAgdDE0IDAgdDE0IDAgdDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNmYWU1YSIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzAgNjggaDYwIHE1IDE2IC00IDIwIHEtMjYgOCAtNTIgMCBxLTkgLTQgLTQgLTIwIFoiIGZpbGw9IiNlOGE5M2IiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">吉士汉堡</div>
+              <div class="dx-own">×True</div>
+              
+              <div class="dx-pref">定制：不要酸黄瓜</div>
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u5409\u58eb\u6c49\u5821 \u00d71\uff0c\u95e8\u5e97 SZ001\uff1b\u5b9a\u5236\uff1a\u4e0d\u8981\u9178\u9ec4\u74dc\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div></div>
+        </div>
+        <div class="cat-block">
+          <h3>小食 <span class="cat-prog">4/6 · 点亮 1</span></h3>
+          <div class="dex-row">
+            <div class="dex-cell" style="border-color:#2196f3;filter:grayscale(1);opacity:.45">
+              <div class="dx-rar" style="color:#2196f3">稀有</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNDAgNTggTDQ2IDEwNiBMNzQgMTA2IEw4MCA1OCBaIiBmaWxsPSIjREEyOTFDIi8+PHBhdGggZD0iTTQwIDU4IEw4MCA1OCBMNzUgNjcgTDQ1IDY3IFoiIGZpbGw9IiNiNzFjMWMiLz48cmVjdCB4PSI1MCIgeT0iMzQiIHdpZHRoPSI2IiBoZWlnaHQ9IjMyIiByeD0iMyIgZmlsbD0iI0ZGQzcyQyIgdHJhbnNmb3JtPSJyb3RhdGUoLTEwIDUzIDUwKSIvPjxyZWN0IHg9IjU5IiB5PSIzMCIgd2lkdGg9IjYiIGhlaWdodD0iMzYiIHJ4PSIzIiBmaWxsPSIjRkZEMzREIiB0cmFuc2Zvcm09InJvdGF0ZSgzIDYyIDQ4KSIvPjxyZWN0IHg9IjY4IiB5PSIzNiIgd2lkdGg9IjYiIGhlaWdodD0iMzAiIHJ4PSIzIiBmaWxsPSIjRkZDNzJDIiB0cmFuc2Zvcm09InJvdGF0ZSgxMyA3MSA1MSkiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">？？？</div>
+              <div class="dx-own">未解锁</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u5927\u85af\u6761 \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#9e9e9e;filter:grayscale(1);opacity:.45">
+              <div class="dx-rar" style="color:#9e9e9e">普通</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNDAgNTggTDQ2IDEwNiBMNzQgMTA2IEw4MCA1OCBaIiBmaWxsPSIjREEyOTFDIi8+PHBhdGggZD0iTTQwIDU4IEw4MCA1OCBMNzUgNjcgTDQ1IDY3IFoiIGZpbGw9IiNiNzFjMWMiLz48cmVjdCB4PSI1MCIgeT0iMzQiIHdpZHRoPSI2IiBoZWlnaHQ9IjMyIiByeD0iMyIgZmlsbD0iI0ZGQzcyQyIgdHJhbnNmb3JtPSJyb3RhdGUoLTEwIDUzIDUwKSIvPjxyZWN0IHg9IjU5IiB5PSIzMCIgd2lkdGg9IjYiIGhlaWdodD0iMzYiIHJ4PSIzIiBmaWxsPSIjRkZEMzREIiB0cmFuc2Zvcm09InJvdGF0ZSgzIDYyIDQ4KSIvPjxyZWN0IHg9IjY4IiB5PSIzNiIgd2lkdGg9IjYiIGhlaWdodD0iMzAiIHJ4PSIzIiBmaWxsPSIjRkZDNzJDIiB0cmFuc2Zvcm09InJvdGF0ZSgxMyA3MSA1MSkiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">？？？</div>
+              <div class="dx-own">未解锁</div>
+              <span class="lit">点亮</span>
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u4e2d\u85af\u6761 \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#2196f3;">
+              <div class="dx-rar" style="color:#2196f3">稀有</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNDIgNDYgcTI0IC0xMiAzOCA4IHExMSAxNiAtMiAzMCBxLTE0IDEzIC0zMiAyIHEtMTUgLTEzIC00IC00MCBaIiBmaWxsPSIjYzg4OTNhIi8+PHBhdGggZD0iTTQyIDQ2IHEtOCAtMiAtMTAgNiBxLTIgOCA2IDkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M4ODkzYSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIyOCIgeT0iNDQiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxMyIgcng9IjUiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">麦乐鸡(5块)</div>
+              <div class="dx-own">×True</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u9ea6\u4e50\u9e21(5\u5757) \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#2196f3;">
+              <div class="dx-rar" style="color:#2196f3">稀有</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNDIgNDYgcTI0IC0xMiAzOCA4IHExMSAxNiAtMiAzMCBxLTE0IDEzIC0zMiAyIHEtMTUgLTEzIC00IC00MCBaIiBmaWxsPSIjYzg4OTNhIi8+PHBhdGggZD0iTTQyIDQ2IHEtOCAtMiAtMTAgNiBxLTIgOCA2IDkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M4ODkzYSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIyOCIgeT0iNDQiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxMyIgcng9IjUiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">麦辣鸡翅(2块)</div>
+              <div class="dx-own">×True</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u9ea6\u8fa3\u9e21\u7fc5(2\u5757) \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#9e9e9e;">
+              <div class="dx-rar" style="color:#9e9e9e">普通</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNDAgNTggTDQ2IDEwNiBMNzQgMTA2IEw4MCA1OCBaIiBmaWxsPSIjREEyOTFDIi8+PHBhdGggZD0iTTQwIDU4IEw4MCA1OCBMNzUgNjcgTDQ1IDY3IFoiIGZpbGw9IiNiNzFjMWMiLz48cmVjdCB4PSI1MCIgeT0iMzQiIHdpZHRoPSI2IiBoZWlnaHQ9IjMyIiByeD0iMyIgZmlsbD0iI0ZGQzcyQyIgdHJhbnNmb3JtPSJyb3RhdGUoLTEwIDUzIDUwKSIvPjxyZWN0IHg9IjU5IiB5PSIzMCIgd2lkdGg9IjYiIGhlaWdodD0iMzYiIHJ4PSIzIiBmaWxsPSIjRkZEMzREIiB0cmFuc2Zvcm09InJvdGF0ZSgzIDYyIDQ4KSIvPjxyZWN0IHg9IjY4IiB5PSIzNiIgd2lkdGg9IjYiIGhlaWdodD0iMzAiIHJ4PSIzIiBmaWxsPSIjRkZDNzJDIiB0cmFuc2Zvcm09InJvdGF0ZSgxMyA3MSA1MSkiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">玉米杯</div>
+              <div class="dx-own">×True</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u7389\u7c73\u676f \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#2196f3;">
+              <div class="dx-rar" style="color:#2196f3">稀有</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNDAgNTggTDQ2IDEwNiBMNzQgMTA2IEw4MCA1OCBaIiBmaWxsPSIjREEyOTFDIi8+PHBhdGggZD0iTTQwIDU4IEw4MCA1OCBMNzUgNjcgTDQ1IDY3IFoiIGZpbGw9IiNiNzFjMWMiLz48cmVjdCB4PSI1MCIgeT0iMzQiIHdpZHRoPSI2IiBoZWlnaHQ9IjMyIiByeD0iMyIgZmlsbD0iI0ZGQzcyQyIgdHJhbnNmb3JtPSJyb3RhdGUoLTEwIDUzIDUwKSIvPjxyZWN0IHg9IjU5IiB5PSIzMCIgd2lkdGg9IjYiIGhlaWdodD0iMzYiIHJ4PSIzIiBmaWxsPSIjRkZEMzREIiB0cmFuc2Zvcm09InJvdGF0ZSgzIDYyIDQ4KSIvPjxyZWN0IHg9IjY4IiB5PSIzNiIgd2lkdGg9IjYiIGhlaWdodD0iMzAiIHJ4PSIzIiBmaWxsPSIjRkZDNzJDIiB0cmFuc2Zvcm09InJvdGF0ZSgxMyA3MSA1MSkiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">蔬菜沙拉(和风酱)</div>
+              <div class="dx-own">×True</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u852c\u83dc\u6c99\u62c9(\u548c\u98ce\u9171) \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div></div>
+        </div>
+        <div class="cat-block">
+          <h3>饮料 <span class="cat-prog">2/2 · 点亮 0</span></h3>
+          <div class="dex-row">
+            <div class="dex-cell" style="border-color:#9e9e9e;">
+              <div class="dx-rar" style="color:#9e9e9e">普通</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNDYgNTIgTDUyIDEwNiBMNjggMTA2IEw3NCA1MiBaIiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiNEQTI5MUMiIHN0cm9rZS13aWR0aD0iMi41Ii8+PHJlY3QgeD0iNDMiIHk9IjQ1IiB3aWR0aD0iMzQiIGhlaWdodD0iOSIgcng9IjMiIGZpbGw9IiNEQTI5MUMiLz48cmVjdCB4PSI2MyIgeT0iMjYiIHdpZHRoPSI1IiBoZWlnaHQ9IjMyIiByeD0iMi41IiBmaWxsPSIjREEyOTFDIiB0cmFuc2Zvcm09InJvdGF0ZSgxMyA2NSA0MikiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">可口可乐(中杯)</div>
+              <div class="dx-own">×True</div>
+              
+              <div class="dx-pref">定制：不要冰</div>
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u53ef\u53e3\u53ef\u4e50(\u4e2d\u676f) \u00d71\uff0c\u95e8\u5e97 SZ001\uff1b\u5b9a\u5236\uff1a\u4e0d\u8981\u51b0\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#9e9e9e;">
+              <div class="dx-rar" style="color:#9e9e9e">普通</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNDYgNTIgTDUyIDEwNiBMNjggMTA2IEw3NCA1MiBaIiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiNEQTI5MUMiIHN0cm9rZS13aWR0aD0iMi41Ii8+PHJlY3QgeD0iNDMiIHk9IjQ1IiB3aWR0aD0iMzQiIGhlaWdodD0iOSIgcng9IjMiIGZpbGw9IiNEQTI5MUMiLz48cmVjdCB4PSI2MyIgeT0iMjYiIHdpZHRoPSI1IiBoZWlnaHQ9IjMyIiByeD0iMi41IiBmaWxsPSIjREEyOTFDIiB0cmFuc2Zvcm09InJvdGF0ZSgxMyA2NSA0MikiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">零度可乐(中杯)</div>
+              <div class="dx-own">×True</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u96f6\u5ea6\u53ef\u4e50(\u4e2d\u676f) \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div></div>
+        </div>
+        <div class="cat-block">
+          <h3>甜品 <span class="cat-prog">1/2 · 点亮 1</span></h3>
+          <div class="dex-row">
+            <div class="dex-cell" style="border-color:#2196f3;filter:grayscale(1);opacity:.45">
+              <div class="dx-rar" style="color:#2196f3">稀有</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNTIgNjYgTDYwIDEwOCBMNjggNjYgWiIgZmlsbD0iI2U4Yzk4YSIgc3Ryb2tlPSIjYzlhODZhIiBzdHJva2Utd2lkdGg9IjEuNSIvPjxjaXJjbGUgY3g9IjYwIiBjeT0iNTQiIHI9IjE3IiBmaWxsPSIjZmZmIi8+PGNpcmNsZSBjeD0iNTQiIGN5PSI1MCIgcj0iNSIgZmlsbD0iI2ZmZTBlYyIgb3BhY2l0eT0iMC43Ii8+PGNpcmNsZSBjeD0iNjYiIGN5PSI1MiIgcj0iNCIgZmlsbD0iI2ZmZDllNiIgb3BhY2l0eT0iMC43Ii8+PC9zdmc+" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">？？？</div>
+              <div class="dx-own">未解锁</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u9ea6\u65cb\u98ce(\u5965\u5229\u5965) \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#9e9e9e;">
+              <div class="dx-rar" style="color:#9e9e9e">普通</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNTIgNjYgTDYwIDEwOCBMNjggNjYgWiIgZmlsbD0iI2U4Yzk4YSIgc3Ryb2tlPSIjYzlhODZhIiBzdHJva2Utd2lkdGg9IjEuNSIvPjxjaXJjbGUgY3g9IjYwIiBjeT0iNTQiIHI9IjE3IiBmaWxsPSIjZmZmIi8+PGNpcmNsZSBjeD0iNTQiIGN5PSI1MCIgcj0iNSIgZmlsbD0iI2ZmZTBlYyIgb3BhY2l0eT0iMC43Ii8+PGNpcmNsZSBjeD0iNjYiIGN5PSI1MiIgcj0iNCIgZmlsbD0iI2ZmZDllNiIgb3BhY2l0eT0iMC43Ii8+PC9zdmc+" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">圆筒冰淇淋</div>
+              <div class="dx-own">×True</div>
+              <span class="lit">点亮</span>
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u5706\u7b52\u51b0\u6dc7\u6dcb \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div></div>
+        </div>
+        <div class="cat-block">
+          <h3>套餐 <span class="cat-prog">1/2 · 点亮 0</span></h3>
+          <div class="dex-row">
+            <div class="dex-cell" style="border-color:#9c27b0;">
+              <div class="dx-rar" style="color:#9c27b0">史诗</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNMjggNTQgUTYwIDM0IDkyIDU0IFE2MCA0OCAyOCA1NCBaIiBmaWxsPSIjZThhOTNiIi8+PGNpcmNsZSBjeD0iNDQiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNTgiIGN5PSI0NSIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNzIiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PHJlY3QgeD0iMzAiIHk9IjU0IiB3aWR0aD0iNjAiIGhlaWdodD0iMTEiIHJ4PSI1IiBmaWxsPSIjN2M0YTFkIi8+PHBhdGggZD0iTTI4IDY1IHE3IC02IDE0IDAgdDE0IDAgdDE0IDAgdDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNmYWU1YSIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzAgNjggaDYwIHE1IDE2IC00IDIwIHEtMjYgOCAtNTIgMCBxLTkgLTQgLTQgLTIwIFoiIGZpbGw9IiNlOGE5M2IiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">1+1随心配</div>
+              <div class="dx-own">×True</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a1+1\u968f\u5fc3\u914d \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div>
+            <div class="dex-cell" style="border-color:#ff9800;filter:grayscale(1);opacity:.45">
+              <div class="dx-rar" style="color:#ff9800">传说</div>
+              <span class="badge dximg-wrap"><img class="dximg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNDIgNDYgcTI0IC0xMiAzOCA4IHExMSAxNiAtMiAzMCBxLTE0IDEzIC0zMiAyIHEtMTUgLTEzIC00IC00MCBaIiBmaWxsPSIjYzg4OTNhIi8+PHBhdGggZD0iTTQyIDQ2IHEtOCAtMiAtMTAgNiBxLTIgOCA2IDkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M4ODkzYSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIyOCIgeT0iNDQiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxMyIgcng9IjUiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+              <div class="dx-name">？？？</div>
+              <div class="dx-own">未解锁</div>
+              
+              
+              <button class="mini-order sm" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u9ea6\u4e50\u9e21\u5f00\u5fc3\u4e50\u56ed\u9910 \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">点单</button>
+            </div></div>
+        </div>
+    </section>
+    <section class="block">
+      <h2><svg class="h-arch" width="26" height="17" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-label="金拱门"><defs><linearGradient id="ag7" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE89A"/><stop offset="45%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#E0A011"/></linearGradient></defs><path d="M12 78 L12 38 Q12 14 36 14 Q60 14 60 38 L60 78 M60 78 L60 38 Q60 14 84 14 Q108 14 108 38 L108 78" fill="none" stroke="url(#ag7)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg> 套餐工坊 <span class="cat-prog">1 个我的专属套餐</span></h2>
+      <div class="combo-row">
+        <div class="combo-card">
+          <div class="combo-name"><svg class="h-arch" width="20" height="13" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-label="金拱门"><defs><linearGradient id="ag6" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE89A"/><stop offset="45%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#E0A011"/></linearGradient></defs><path d="M12 78 L12 38 Q12 14 36 14 Q60 14 60 38 L60 78 M60 78 L60 38 Q60 14 84 14 Q108 14 108 38 L108 78" fill="none" stroke="url(#ag6)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg> 测试快乐餐</div>
+          <div class="combo-items"><span class="ci">中薯条 ×1</span><span class="ci">圆筒冰淇淋 ×1</span></div>
+          <button class="order-btn small" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\u5957\u9910\u3010\u6d4b\u8bd5\u5feb\u4e50\u9910\u3011\uff1a\u4e2d\u85af\u6761\u00d71\u3001\u5706\u7b52\u51b0\u6dc7\u6dcb\u00d71 \u95e8\u5e97 SZ001")">一键下单这份套餐</button>
+        </div></div>
+      <button class="ghost-btn" onclick="copyOrder("\u8bb0\u4f4f\uff1a<\u9910\u54c1\u540d> <\u4e2a\u6027\u5316\u9700\u6c42\uff0c\u5982 \u4e0d\u8981\u9178\u9ec4\u74dc / \u5c11\u51b0 / \u591a\u9171>")">创建新套餐（复制指令发给我）</button>
+    </section>
+    <section class="block">
+      <h2><svg class="h-arch" width="26" height="17" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-label="金拱门"><defs><linearGradient id="ag8" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE89A"/><stop offset="45%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#E0A011"/></linearGradient></defs><path d="M12 78 L12 38 Q12 14 36 14 Q60 14 60 38 L60 78 M60 78 L60 38 Q60 14 84 14 Q108 14 108 38 L108 78" fill="none" stroke="url(#ag8)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg> 成就</h2>
+      <div class="ach-row"><span class='ach on'>🍔 饮料全图鉴</span><span class='ach on'>🎰 初出茅庐</span><span class='ach on'>💡 点亮启蒙</span></div>
+      <div class="ach-row locked"><span class='ach off'>🍔 汉堡全图鉴（集齐全部 6 个汉堡）</span><span class='ach off'>🍔 小食全图鉴（集齐全部 6 个小食）</span><span class='ach off'>🍔 甜品全图鉴（集齐全部 2 个甜品）</span><span class='ach off'>🍔 套餐全图鉴（集齐全部 2 个套餐）</span><span class='ach off'>🌟 麦门全图鉴大师（集齐全部 18 道菜品）</span><span class='ach off'>🎰 收集控（累计抽满 50 次）</span><span class='ach off'>👑 欧皇降临（抽中至少 1 张传说(SSR)）</span><span class='ach off'>🔥 十全十美（点亮满 10 张卡）</span><span class='ach off'>🏅 满堂点亮（点亮全部 18 张卡）</span></div>
+    </section>
+    <section class="block">
+      <h2><svg class="h-arch" width="26" height="17" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-label="金拱门"><defs><linearGradient id="ag9" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE89A"/><stop offset="45%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#E0A011"/></linearGradient></defs><path d="M12 78 L12 38 Q12 14 36 14 Q60 14 60 38 L60 78 M60 78 L60 38 Q60 14 84 14 Q108 14 108 38 L108 78" fill="none" stroke="url(#ag9)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg> 麦门最爱 · 近 7 天
+          <span class="cat-prog">19 单 · ¥343.0</span></h2>
+      
+        <div class="hero" id="hero-week">
+          <div class="hero-top">最爱榜一</div>
+          <span class="badge hero-img-wrap"><img class="hero-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNTIgNjYgTDYwIDEwOCBMNjggNjYgWiIgZmlsbD0iI2U4Yzk4YSIgc3Ryb2tlPSIjYzlhODZhIiBzdHJva2Utd2lkdGg9IjEuNSIvPjxjaXJjbGUgY3g9IjYwIiBjeT0iNTQiIHI9IjE3IiBmaWxsPSIjZmZmIi8+PGNpcmNsZSBjeD0iNTQiIGN5PSI1MCIgcj0iNSIgZmlsbD0iI2ZmZTBlYyIgb3BhY2l0eT0iMC43Ii8+PGNpcmNsZSBjeD0iNjYiIGN5PSI1MiIgcj0iNCIgZmlsbD0iI2ZmZDllNiIgb3BhY2l0eT0iMC43Ii8+PC9zdmc+" alt=""><span class="sheen"></span></span>
+          <div class="hero-name">圆筒冰淇淋</div>
+          <div class="hero-meta">甜品 · 甜 · 点单 6 次</div>
+          
+          <button class="order-btn" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u5706\u7b52\u51b0\u6dc7\u6dcb \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">一键复刻这份最爱</button>
+          <div class="toast" id="toast-week">已复制下单指令，粘到对话框发给我即可下单</div>
+        </div>
+      <p class="summary">最爱单品：<b>圆筒冰淇淋</b> · 最爱时段：<b>下午茶</b> · 最爱口味：<b>经典</b></p>
+      <p class="meme">经典永流传，你的胃很有品味。 麦门永不为奴——但你的钱包偶尔会。</p>
+      <table class="lb">
+        <thead><tr><th>#</th><th>单品/套餐</th><th>分类</th><th>口味</th><th>次数</th><th>花费</th></tr></thead>
+        <tbody>
+        <tr class="lb1 hot">
+          <td class="rk">1</td>
+          <td>圆筒冰淇淋</td>
+          <td>甜品</td>
+          <td>甜</td>
+          <td class="num">6</td>
+          <td class="num">¥30.0</td>
+        </tr>
+        <tr class="lb2">
+          <td class="rk">2</td>
+          <td>吉士汉堡</td>
+          <td>汉堡</td>
+          <td>芝士香</td>
+          <td class="num">5</td>
+          <td class="num">¥67.5</td>
+        </tr>
+        <tr class="lb3">
+          <td class="rk">3</td>
+          <td>大薯条</td>
+          <td>小食</td>
+          <td>经典</td>
+          <td class="num">4</td>
+          <td class="num">¥56.0</td>
+        </tr>
+        <tr class="lb4">
+          <td class="rk">4</td>
+          <td>中薯条</td>
+          <td>小食</td>
+          <td>经典</td>
+          <td class="num">4</td>
+          <td class="num">¥46.0</td>
+        </tr>
+        <tr class="lb5">
+          <td class="rk">5</td>
+          <td>麦辣鸡腿堡</td>
+          <td>汉堡</td>
+          <td>辣</td>
+          <td class="num">3</td>
+          <td class="num">¥64.5</td>
+        </tr></tbody>
+      </table>
+      <div class="dist"><div class="dist-t">时段分布</div><span class='pill'>下午茶 13</span><span class='pill'>早餐 2</span><span class='pill'>午餐 2</span><span class='pill'>晚餐 2</span></div>
+      <div class="dist"><div class="dist-t">口味分布</div><span class='pill'>经典 12</span><span class='pill'>甜 6</span><span class='pill'>芝士香 5</span><span class='pill'>辣 3</span><span class='pill'>解腻饮 2</span></div>
+      <button class="save-btn" onclick="saveShareCard('week')">一键保存麦门最爱卡片（图片）</button>
+    </section>
+    <section class="block">
+      <h2><svg class="h-arch" width="26" height="17" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-label="金拱门"><defs><linearGradient id="ag10" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE89A"/><stop offset="45%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#E0A011"/></linearGradient></defs><path d="M12 78 L12 38 Q12 14 36 14 Q60 14 60 38 L60 78 M60 78 L60 38 Q60 14 84 14 Q108 14 108 38 L108 78" fill="none" stroke="url(#ag10)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg> 麦门最爱 · 本月
+          <span class="cat-prog">20 单 · ¥399.5</span></h2>
+      
+        <div class="hero" id="hero-month">
+          <div class="hero-top">最爱榜一</div>
+          <span class="badge hero-img-wrap"><img class="hero-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNTIgNjYgTDYwIDEwOCBMNjggNjYgWiIgZmlsbD0iI2U4Yzk4YSIgc3Ryb2tlPSIjYzlhODZhIiBzdHJva2Utd2lkdGg9IjEuNSIvPjxjaXJjbGUgY3g9IjYwIiBjeT0iNTQiIHI9IjE3IiBmaWxsPSIjZmZmIi8+PGNpcmNsZSBjeD0iNTQiIGN5PSI1MCIgcj0iNSIgZmlsbD0iI2ZmZTBlYyIgb3BhY2l0eT0iMC43Ii8+PGNpcmNsZSBjeD0iNjYiIGN5PSI1MiIgcj0iNCIgZmlsbD0iI2ZmZDllNiIgb3BhY2l0eT0iMC43Ii8+PC9zdmc+" alt=""><span class="sheen"></span></span>
+          <div class="hero-name">圆筒冰淇淋</div>
+          <div class="hero-meta">甜品 · 甜 · 点单 6 次</div>
+          
+          <button class="order-btn" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u5706\u7b52\u51b0\u6dc7\u6dcb \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">一键复刻这份最爱</button>
+          <div class="toast" id="toast-month">已复制下单指令，粘到对话框发给我即可下单</div>
+        </div>
+      <p class="summary">最爱单品：<b>圆筒冰淇淋</b> · 最爱时段：<b>下午茶</b> · 最爱口味：<b>经典</b></p>
+      <p class="meme">经典永流传，你的胃很有品味。 麦门永不为奴——但你的钱包偶尔会。</p>
+      <table class="lb">
+        <thead><tr><th>#</th><th>单品/套餐</th><th>分类</th><th>口味</th><th>次数</th><th>花费</th></tr></thead>
+        <tbody>
+        <tr class="lb1 hot">
+          <td class="rk">1</td>
+          <td>圆筒冰淇淋</td>
+          <td>甜品</td>
+          <td>甜</td>
+          <td class="num">6</td>
+          <td class="num">¥30.0</td>
+        </tr>
+        <tr class="lb2">
+          <td class="rk">2</td>
+          <td>麦辣鸡腿堡</td>
+          <td>汉堡</td>
+          <td>辣</td>
+          <td class="num">5</td>
+          <td class="num">¥107.5</td>
+        </tr>
+        <tr class="lb3">
+          <td class="rk">3</td>
+          <td>吉士汉堡</td>
+          <td>汉堡</td>
+          <td>芝士香</td>
+          <td class="num">5</td>
+          <td class="num">¥67.5</td>
+        </tr>
+        <tr class="lb4">
+          <td class="rk">4</td>
+          <td>大薯条</td>
+          <td>小食</td>
+          <td>经典</td>
+          <td class="num">4</td>
+          <td class="num">¥56.0</td>
+        </tr>
+        <tr class="lb5">
+          <td class="rk">5</td>
+          <td>中薯条</td>
+          <td>小食</td>
+          <td>经典</td>
+          <td class="num">4</td>
+          <td class="num">¥46.0</td>
+        </tr></tbody>
+      </table>
+      <div class="dist"><div class="dist-t">时段分布</div><span class='pill'>下午茶 13</span><span class='pill'>早餐 2</span><span class='pill'>午餐 2</span><span class='pill'>晚餐 2</span><span class='pill'>夜宵 1</span></div>
+      <div class="dist"><div class="dist-t">口味分布</div><span class='pill'>经典 12</span><span class='pill'>辣 6</span><span class='pill'>甜 6</span><span class='pill'>芝士香 5</span><span class='pill'>解腻饮 2</span></div>
+      <button class="save-btn" onclick="saveShareCard('month')">一键保存麦门最爱卡片（图片）</button>
+    </section>
+    <section class="block">
+      <h2><svg class="h-arch" width="26" height="17" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-label="金拱门"><defs><linearGradient id="ag11" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE89A"/><stop offset="45%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#E0A011"/></linearGradient></defs><path d="M12 78 L12 38 Q12 14 36 14 Q60 14 60 38 L60 78 M60 78 L60 38 Q60 14 84 14 Q108 14 108 38 L108 78" fill="none" stroke="url(#ag11)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg> 麦门最爱 · 全部
+          <span class="cat-prog">23 单 · ¥508.0</span></h2>
+      
+        <div class="hero" id="hero-all">
+          <div class="hero-top">最爱榜一</div>
+          <span class="badge hero-img-wrap"><img class="hero-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjM4JSIgY3k9IjMwJSIgcj0iODAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2M0Ii8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmMGM2NGUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOTlmMWUiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1NiIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNMjggNTQgUTYwIDM0IDkyIDU0IFE2MCA0OCAyOCA1NCBaIiBmaWxsPSIjZThhOTNiIi8+PGNpcmNsZSBjeD0iNDQiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNTgiIGN5PSI0NSIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PGNpcmNsZSBjeD0iNzIiIGN5PSI0OCIgcj0iMS42IiBmaWxsPSIjZmZmN2Q2Ii8+PHJlY3QgeD0iMzAiIHk9IjU0IiB3aWR0aD0iNjAiIGhlaWdodD0iMTEiIHJ4PSI1IiBmaWxsPSIjN2M0YTFkIi8+PHBhdGggZD0iTTI4IDY1IHE3IC02IDE0IDAgdDE0IDAgdDE0IDAgdDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNmYWU1YSIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzAgNjggaDYwIHE1IDE2IC00IDIwIHEtMjYgOCAtNTIgMCBxLTkgLTQgLTQgLTIwIFoiIGZpbGw9IiNlOGE5M2IiLz48L3N2Zz4=" alt=""><span class="sheen"></span></span>
+          <div class="hero-name">麦辣鸡腿堡</div>
+          <div class="hero-meta">汉堡 · 辣 · 点单 6 次</div>
+          
+          <button class="order-btn" onclick="copyOrder("\u8bf7\u5e2e\u6211\u4e0b\u5355\uff1a\u9ea6\u8fa3\u9e21\u817f\u5821 \u00d71\uff0c\u95e8\u5e97 SZ001\uff08\u6765\u81ea\u9ea6\u9ea6\u56fe\u9274\uff09")">一键复刻这份最爱</button>
+          <div class="toast" id="toast-all">已复制下单指令，粘到对话框发给我即可下单</div>
+        </div>
+      <p class="summary">最爱单品：<b>麦辣鸡腿堡</b> · 最爱时段：<b>下午茶</b> · 最爱口味：<b>经典</b></p>
+      <p class="meme">经典永流传，你的胃很有品味。 麦门永不为奴——但你的钱包偶尔会。</p>
+      <table class="lb">
+        <thead><tr><th>#</th><th>单品/套餐</th><th>分类</th><th>口味</th><th>次数</th><th>花费</th></tr></thead>
+        <tbody>
+        <tr class="lb1 hot">
+          <td class="rk">1</td>
+          <td>麦辣鸡腿堡</td>
+          <td>汉堡</td>
+          <td>辣</td>
+          <td class="num">6</td>
+          <td class="num">¥129.0</td>
+        </tr>
+        <tr class="lb2">
+          <td class="rk">2</td>
+          <td>圆筒冰淇淋</td>
+          <td>甜品</td>
+          <td>甜</td>
+          <td class="num">6</td>
+          <td class="num">¥30.0</td>
+        </tr>
+        <tr class="lb3">
+          <td class="rk">3</td>
+          <td>中薯条</td>
+          <td>小食</td>
+          <td>经典</td>
+          <td class="num">5</td>
+          <td class="num">¥57.5</td>
+        </tr>
+        <tr class="lb4">
+          <td class="rk">4</td>
+          <td>吉士汉堡</td>
+          <td>汉堡</td>
+          <td>芝士香</td>
+          <td class="num">5</td>
+          <td class="num">¥67.5</td>
+        </tr>
+        <tr class="lb5">
+          <td class="rk">5</td>
+          <td>大薯条</td>
+          <td>小食</td>
+          <td>经典</td>
+          <td class="num">4</td>
+          <td class="num">¥56.0</td>
+        </tr></tbody>
+      </table>
+      <div class="dist"><div class="dist-t">时段分布</div><span class='pill'>下午茶 13</span><span class='pill'>午餐 3</span><span class='pill'>晚餐 3</span><span class='pill'>夜宵 2</span><span class='pill'>早餐 2</span></div>
+      <div class="dist"><div class="dist-t">口味分布</div><span class='pill'>经典 15</span><span class='pill'>辣 7</span><span class='pill'>甜 7</span><span class='pill'>芝士香 5</span><span class='pill'>解腻饮 3</span></div>
+      <button class="save-btn" onclick="saveShareCard('all')">一键保存麦门最爱卡片（图片）</button>
+    </section>
+<p class="note">数据来源：麦当劳官方 MCP（https://mcp.mcd.cn）。无 Token 时为 DEMO 演示数据；配置麦当劳 MCP Token 后全部切换为真实菜单/订单。
+  「麦门最爱」统计 = 经本 Skill 下的本地订单 + MCP 近 10 笔合并，越用越准。</p>
+<footer>麦麦图鉴 · 麦当劳程序员节创意开发大赛参赛作品（非官方）</footer>
+</div>
+<canvas id="shareCanvas" width="640" height="900" style="display:none"></canvas>
+<script>
+const FAV = {"week": {"period_label": "近 7 天", "orders_in_period": 19, "total_spend": 343.0, "top_name": "圆筒冰淇淋", "top_meta": "甜品 · 甜", "top_count": 6, "fav_time": "下午茶", "fav_flavor": "经典", "time_dist": {"下午茶": 13, "早餐": 2, "午餐": 2, "晚餐": 2}, "flavor_dist": {"经典": 12, "甜": 6, "芝士香": 5, "辣": 3, "解腻饮": 2}, "meme": "经典永流传，你的胃很有品味。 麦门永不为奴——但你的钱包偶尔会。"}, "month": {"period_label": "本月", "orders_in_period": 20, "total_spend": 399.5, "top_name": "圆筒冰淇淋", "top_meta": "甜品 · 甜", "top_count": 6, "fav_time": "下午茶", "fav_flavor": "经典", "time_dist": {"下午茶": 13, "早餐": 2, "午餐": 2, "晚餐": 2, "夜宵": 1}, "flavor_dist": {"经典": 12, "辣": 6, "甜": 6, "芝士香": 5, "解腻饮": 2}, "meme": "经典永流传，你的胃很有品味。 麦门永不为奴——但你的钱包偶尔会。"}, "all": {"period_label": "全部", "orders_in_period": 23, "total_spend": 508.0, "top_name": "麦辣鸡腿堡", "top_meta": "汉堡 · 辣", "top_count": 6, "fav_time": "下午茶", "fav_flavor": "经典", "time_dist": {"下午茶": 13, "午餐": 3, "晚餐": 3, "夜宵": 2, "早餐": 2}, "flavor_dist": {"经典": 15, "辣": 7, "甜": 7, "芝士香": 5, "解腻饮": 3}, "meme": "经典永流传，你的胃很有品味。 麦门永不为奴——但你的钱包偶尔会。"}};
+const STORE = "SZ001";
+
+function copyOrder(text){
+  function show(id){var t=document.getElementById(id);if(t)t.textContent='已复制下单指令，粘到对话框发给我即可下单';}
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){show('toast');show('toast-week');show('toast-month');show('toast-all');},
+      function(){prompt('复制下面这行发给我：',text);});
+  }else{prompt('复制下面这行发给我：',text);}
+}
+function saveShareCard(key){
+  var d=FAV[key]; if(!d) return;
+  var c=document.getElementById('shareCanvas'); var x=c.getContext('2d');
+  var W=640,H=900;
+  var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#DA291C'); g.addColorStop(1,'#b71c1c');
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.fillStyle='#FFC72C'; x.fillRect(0,0,W,12); x.fillRect(0,H-12,W,12);
+  x.fillStyle='#fff'; x.textAlign='center';
+  x.font='bold 34px sans-serif'; x.fillText('我的麦门最爱',W/2,70);
+  x.font='16px sans-serif';
+  x.fillText((d.period_label||'')+' · 共 '+(d.orders_in_period||0)+' 单 · ¥'+(d.total_spend||0),W/2,100);
+  // 金属徽章（canvas 自绘，不用 emoji）
+  var cx=W/2, cy=235, r=70;
+  var rg=x.createRadialGradient(cx-20,cy-25,8,cx,cy,r);
+  rg.addColorStop(0,'#fff7d6'); rg.addColorStop(0.55,'#f5d04e'); rg.addColorStop(1,'#caa11f');
+  x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.fillStyle=rg; x.fill();
+  x.lineWidth=5; x.strokeStyle='#b8860b'; x.stroke();
+  x.lineWidth=2; x.strokeStyle='rgba(255,255,255,0.6)'; x.beginPath(); x.arc(cx,cy,r-9,0,Math.PI*2); x.stroke();
+  x.fillStyle='#4a3500'; x.font='bold 22px sans-serif'; x.textAlign='center';
+  var nm=d.top_name||'—'; if(nm.length>5) nm=nm.slice(0,4)+'…';
+  x.fillText(nm,cx,cy+8);
+  x.font='12px sans-serif'; x.fillStyle='#5a4500'; x.fillText('MCD',cx,cy+30);
+  x.fillStyle='#DA291C'; x.font='bold 16px sans-serif'; x.textAlign='center';
+  x.fillText('最爱榜一',W/2,cy+r+30);
+  x.fillStyle='#2b2b2b'; x.font='bold 26px sans-serif'; x.fillText((d.top_name||'—'),W/2,cy+r+62);
+  x.fillStyle='#666'; x.font='14px sans-serif'; x.fillText((d.top_meta||'')+' · 点单 '+(d.top_count||0)+' 次',W/2,cy+r+88);
+  x.fillStyle='#fff'; x.font='bold 20px sans-serif'; x.textAlign='left';
+  x.fillText('最爱时段：'+(d.fav_time||'—'),80,cy+r+140);
+  x.fillText('最爱口味：'+(d.fav_flavor||'—'),80,cy+r+182);
+  x.fillText('最爱单品：'+(d.top_name||'—'),80,cy+r+224);
+  x.fillStyle='#FFC72C'; x.font='15px sans-serif';
+  wrapText(x,d.meme||'',80,cy+r+270,W-160,22);
+  x.fillStyle='#fff'; x.font='bold 16px sans-serif';
+  x.fillText('时段分布',80,cy+r+360);
+  x.font='14px sans-serif'; var ty=cy+r+388; var line=[];
+  for(var k in (d.time_dist||{})){ line.push(k+' '+d.time_dist[k]); }
+  x.fillText(line.join('   '),80,ty);
+  x.font='bold 16px sans-serif'; x.fillText('口味分布',80,ty+52);
+  x.font='14px sans-serif'; var fl=[];
+  for(var k2 in (d.flavor_dist||{})){ fl.push(k2+' '+d.flavor_dist[k2]); }
+  x.fillText(fl.join('   '),80,ty+80);
+  x.fillStyle='#FFC72C'; x.font='13px sans-serif'; x.textAlign='center';
+  x.fillText('麦麦图鉴 · 麦当劳程序员节创意开发大赛（非官方）',W/2,H-40);
+  c.toBlob(function(blob){var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='麦门最爱_'+(d.period_label||'report')+'.png'; a.click();},'image/png');
+}
+function roundRect(x,X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath();}
+function wrapText(x,text,xx,yy,maxW,lh){var chars=text.split('');var line='';var yy2=yy;for(var i=0;i<chars.length;i++){var test=line+chars[i];if(x.measureText(test).width>maxW&&line){x.fillText(line,xx,yy2);line=chars[i];yy2+=lh;}else line=test;}x.fillText(line,xx,yy2);}
+function toggleComboBuilder(){
+  var b=document.getElementById('comboBuilder');
+  if(b) b.hidden = !b.hidden;
+}
+function copyComboPlan(){
+  var boxes=document.querySelectorAll('.cb-pick');
+  var picks=[];
+  for(var i=0;i<boxes.length;i++){
+    var bx=boxes[i];
+    if(bx.checked){
+      var code=bx.getAttribute('data-code');
+      var name=bx.getAttribute('data-name');
+      var pf=document.querySelector('.cb-pref[data-code="'+code+'"]');
+      var pref=pf?pf.value.trim():'';
+      picks.push({code:code,name:name,pref:pref});
+    }
+  }
+  if(picks.length<2){ alert('至少选 2 张卡来组套餐～'); return; }
+  var cname=(document.getElementById('comboName').value.trim())||'我的麦门套餐';
+  var items=[];
+  for(var j=0;j<picks.length;j++){ items.push(picks[j].name+(picks[j].pref?('（'+picks[j].pref+'）'):'')); }
+  var lines=[];
+  lines.push('请帮我把刚抽到的卡定制成我的专属套餐，并直接下单：');
+  lines.push('套餐名：《'+cname+'》，门店 '+STORE+'。');
+  lines.push('包含：'+items.join('、')+'。');
+  lines.push('这些卡可能还没点亮，请允许「未点亮卡」直接下单，并把这份套餐存为我的常点套餐（方便下次一键复刻）。');
+  copyOrder(lines.join('\n'));
+  var t=document.getElementById('comboToast');
+  if(t) t.textContent='已复制套餐指令，粘到对话框发给我即可下单 + 收藏';
+}
+
+
+function setupZipper(stageId){
+  var stage=document.getElementById(stageId); if(!stage) return;
+  var tab=stage.querySelector('.zip-tab');
+  var track=stage.querySelector('.zip-track');
+  var seam=stage.querySelector('.zip-seam');
+  var btn=document.getElementById('openNow');
+  var tip=document.getElementById('stageTip');
+  var opened=false; var dragging=false;
+  function setProg(p){
+    if(p<0)p=0; if(p>1)p=1;
+    var h=track.clientHeight;
+    tab.style.top=(p*h)+'px';
+    seam.style.height=(p*h)+'px';
+    if(p>=0.985 && !opened) openDoor();
+  }
+  function openDoor(){
+    if(opened) return; opened=true;
+    stage.classList.add('open');
+    if(tip) tip.textContent='金拱门已开！这就是你抽中的产品';
+    if(btn){btn.textContent='已开卡';btn.disabled=true;}
+  }
+  function y2p(cy){var r=track.getBoundingClientRect(); return (cy-r.top)/r.height;}
+  tab.addEventListener('pointerdown',function(e){dragging=true;try{tab.setPointerCapture(e.pointerId);}catch(_){}e.preventDefault();});
+  window.addEventListener('pointermove',function(e){if(!dragging)return;setProg(y2p(e.clientY));});
+  window.addEventListener('pointerup',function(e){dragging=false;});
+  if(btn) btn.addEventListener('click',function(){
+    if(opened) return; var p=0;
+    var iv=setInterval(function(){p+=0.03;setProg(p);if(p>=1){clearInterval(iv);openDoor();}},18);
+  });
+  setProg(0);
+}
+setupZipper('openStage');
+
+</script>
+</body></html>
